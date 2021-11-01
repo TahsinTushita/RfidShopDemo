@@ -177,6 +177,10 @@ button {
   border-radius: 20px;
 }
 
+button:disabled {
+  background: gray;
+}
+
 .submit {
   text-align: center;
 }

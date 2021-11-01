@@ -1,25 +1,3 @@
-// const sql = require("../index");
-// const mysqlClient = require("mysql");
-// const dotenv = require("dotenv");
-// dotenv.config();
-
-// Create a connection to the database
-// const connection = mysqlClient.createConnection({
-//   host: "localhost",
-//   user: "admin",
-//   password: "adminA1@",
-//   database: "rfid_demo",
-//   port: "3306",
-// });
-
-// open the MySQL connection
-// connection.connect((error) => {
-//   if (error) throw error;
-//   console.log("Successfully connected to the database.");
-// });
-
-// module.exports = connection;
-
 const connection = require("./connection");
 
 const DC_inventory = function (dc_inventory) {
@@ -53,6 +31,15 @@ const OngoingToShop = function (ongoingToShop) {
   this.colour = ongoingToShop.colour;
   this.sz = ongoingToShop.sz;
   this.price = ongoingToShop.price;
+};
+
+const Shop1 = function (shop1) {
+  this.tid = shop.tid;
+  this.style = shop.style;
+  this.name = shop.name;
+  this.colour = shop.colour;
+  this.sz = shop.sz;
+  this.price = shop.price;
 };
 
 DC_inventory.getAll = (result) => {
@@ -261,9 +248,88 @@ OngoingToShop.delete = (tid, result) => {
   );
 };
 
+OngoingToShop.getFromShop = (shop, result) => {
+  connection.query(
+    "SELECT * FROM ongoing_to_shop WHERE shop = ?",
+    shop,
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+
+      console.log("ongoing_to_shop: ", res);
+      result(null, res);
+    }
+  );
+};
+
+OngoingToShop.deleteFromShop = (shop, result) => {
+  connection.query(
+    "DELETE FROM ongoing_to_shop WHERE shop = ?",
+    shop,
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+
+      console.log("deleted from shop: ", res);
+      result(null, res);
+    }
+  );
+};
+
+Shop1.getAll = (result) => {
+  connection.query("SELECT * FROM shop1", (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+
+    console.log("shop1: ", res);
+    result(null, res);
+  });
+};
+
+Shop1.delete = (tid, result) => {
+  connection.query("DELETE FROM shop1 WHERE tid = ?", tid, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+
+    console.log("deleted tag: ", res);
+    result(null, res);
+  });
+};
+
+Shop1.bulkCreate = (values, result) => {
+  connection.query(
+    "INSERT INTO shop1 (tid, style, name, colour, sz, price) VALUES ?",
+    [values],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+
+      console.log({ id: res.insertId, ...values });
+      console.log("Tids registered");
+      result(null, { id: res.insertId, ...values });
+    }
+  );
+};
+
 module.exports = {
   DC_inventory,
   DC_inventory_update,
   DC_tags,
   OngoingToShop,
+  Shop1,
 };

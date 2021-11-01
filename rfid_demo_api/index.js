@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const controller = require("./db/controller");
 const tagsController = require("./db/tagsController");
 const ongoingToShopController = require("./db/ongoingToShopController");
+const shop1Controller = require("./db/shop1Controller");
 const cors = require("cors");
 const dotenv = require("dotenv");
 dotenv.config();
@@ -36,6 +37,15 @@ app.post("/dc_tags/bulkCreate", tagsController.bulkCreate);
 app.post("/ongoing_to_shop/bulkCreate", ongoingToShopController.bulkCreate);
 app.delete("/ongoing_to_shop/delete/:tid", ongoingToShopController.delete);
 app.get("/ongoing_to_shop", ongoingToShopController.getAll);
+app.get("/ongoing_to_shop/:shop", ongoingToShopController.getFromShop);
+app.delete(
+  "/ongoing_to_shop/deleteFromShop/:shop",
+  ongoingToShopController.deleteFromShop
+);
+
+app.post("/shop1/bulkCreate", shop1Controller.bulkCreate);
+app.get("/shop1", shop1Controller.getAll);
+app.delete("/shop1/delete/:tid", shop1Controller.delete);
 
 app.listen(process.env.PORT, () => {
   console.log("Server is running on port " + process.env.PORT);

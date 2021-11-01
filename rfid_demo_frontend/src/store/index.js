@@ -15,6 +15,8 @@ export default createStore({
     lastTidId: null,
     stock: null,
     ongoingShops: [],
+    shopTids: [],
+    shop1Tids: [],
   },
   mutations: {
     SET_STYLES(state, styles) {
@@ -43,6 +45,18 @@ export default createStore({
 
     SET_ONGOING_SHOPS(state, ongoingShops) {
       state.ongoingShops = ongoingShops;
+    },
+
+    SET_SHOP_TIDS(state, shopTids) {
+      state.shopTids = shopTids;
+    },
+
+    SET_SHOP_TIDS_TO_NULL(state) {
+      state.shopTids = [];
+    },
+
+    SET_SHOP1_TIDS(state, shop1Tids) {
+      state.shop1Tids = shop1Tids;
     },
   },
   actions: {
@@ -211,6 +225,71 @@ export default createStore({
           console.log(error);
         };
     },
+
+    getFromShop({ commit }, shop) {
+      axios.get("/ongoing_to_shop/" + shop).then((res) => {
+        console.log(res.data);
+        commit("SET_SHOP_TIDS", res.data);
+      }),
+        (error) => {
+          console.log(error);
+        };
+    },
+
+    deleteFromShop({ commit }, shop) {
+      axios.delete("/ongoing_to_shop/deleteFromShop/" + shop).then((res) => {
+        console.log(res.data);
+        commit("SET_SHOP_TIDS_TO_NULL");
+      }),
+        (error) => {
+          console.log(error);
+        };
+    },
+
+    registerTidsToShop1({ commit }, data) {
+      const values = [];
+      const shop = "shop1";
+
+      for (const item of data) {
+        values.push([
+          item.tid,
+          item.style,
+          item.name,
+          item.colour,
+          item.sz,
+          item.price,
+        ]);
+      }
+
+      axios.post("/shop1/bulkCreate", values).then((res) => {
+        console.log(res);
+        this.dispatch("deleteFromShop", shop);
+      }),
+        (error) => {
+          console.log(error);
+        };
+    },
+
+    getTidsFromShop1({ commit }) {
+      axios.get("/shop1").then((res) => {
+        console.log(res.data);
+        commit("SET_SHOP1_TIDS", res.data);
+      }),
+        (error) => {
+          console.log(error);
+        };
+    },
+
+    deleteTidFromShop1({ commit }, tid) {
+      axios.delete("/shop1/delete/" + tid).then((res) => {
+        console.log(res.data);
+        this.dispatch("deleteFromDcTags", tid);
+        this.dispatch("getTidsFromShop1");
+      }),
+        (error) => {
+          console.log(error);
+        };
+    },
   },
 
   getters: {
@@ -236,6 +315,14 @@ export default createStore({
 
     ongoingShops: (state) => {
       return state.ongoingShops;
+    },
+
+    shopTids: (state) => {
+      return state.shopTids;
+    },
+
+    shop1Tids: (state) => {
+      return state.shop1Tids;
     },
   },
 

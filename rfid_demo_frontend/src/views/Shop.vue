@@ -39,19 +39,20 @@ export default {
             price: null,
             tempTid: null,
             showModal: false,
-            message: "Product sold"
+            message: "Product sold",
+            shop: "shop1"
         };
     },
     components: { Modal },
 
     mounted() {
-        this.$store.dispatch('getOngoingShops')
+        this.$store.dispatch('getTidsFromShop1')
     },
 
     computed: {
-        ongoingShops: {
-            get () {
-                return this.$store.getters.ongoingShops
+        shop1Tids: {
+            get() {
+                return this.$store.getters.shop1Tids
             }
         }
     },
@@ -61,7 +62,7 @@ export default {
             if(this.tid) {
                 // if(this.tempTid && this.tempTid !== this.tid) {
                     if(tidLength === 24) {
-                        this.ongoingShops.filter(item => {
+                        this.shop1Tids.filter(item => {
                             if(item.tid == this.tid) {
                                 this.name = item.name
                                 this.colour = item.colour
@@ -81,7 +82,7 @@ export default {
 
         sellProduct() {
             if(this.tempTid) {
-                this.$store.dispatch('deleteFromOngoingShop', this.tempTid)
+                this.$store.dispatch('deleteTidFromShop1', this.tempTid)
                 this.showModal = true
             }
         },

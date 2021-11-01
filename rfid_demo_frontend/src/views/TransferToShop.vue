@@ -4,7 +4,7 @@
     <label>Shop:</label>
     <select v-model="shop">
       <option v-for="shop in shops" :value="shop.shop" :key="shop.id">
-        {{ shop.shop }}
+        {{ shop.value }}
       </option>
     </select>
 
@@ -37,8 +37,8 @@ import Modal from "../components/Modal.vue"
 export default {
     data() {
     return {
-      shops: [{id: 1, shop: "Shop 1"},
-            {id: 2, shop: "Shop 2"}],
+      shops: [{id: 1, value: "Shop 1", shop: "shop1"},
+            {id: 2, value: "Shop 2", shop: "shop2"}],
       shop: null,
       justTids: [],
       tempTids: [],

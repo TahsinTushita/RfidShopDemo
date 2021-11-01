@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import DCTags from "../views/DCTags.vue";
 import TransferToShop from "../views/TransferToShop.vue";
 import Shop from "../views/Shop.vue";
+import Shop1 from "../views/Shop1.vue";
 
 const routes = [
   {
@@ -18,6 +19,11 @@ const routes = [
     path: "/shop",
     name: "Shop",
     component: Shop,
+  },
+  {
+    path: "/shop1",
+    name: "Shop1",
+    component: Shop1,
   },
   {
     path: "/dcStyles",
