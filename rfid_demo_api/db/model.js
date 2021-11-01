@@ -1,24 +1,26 @@
 // const sql = require("../index");
-const mysqlClient = require("mysql");
+// const mysqlClient = require("mysql");
 // const dotenv = require("dotenv");
 // dotenv.config();
 
 // Create a connection to the database
-const connection = mysqlClient.createConnection({
-  host: "localhost",
-  user: "admin",
-  password: "adminA1@",
-  database: "rfid_demo",
-  port: "3306",
-});
+// const connection = mysqlClient.createConnection({
+//   host: "localhost",
+//   user: "admin",
+//   password: "adminA1@",
+//   database: "rfid_demo",
+//   port: "3306",
+// });
 
 // open the MySQL connection
-connection.connect((error) => {
-  if (error) throw error;
-  console.log("Successfully connected to the database.");
-});
+// connection.connect((error) => {
+//   if (error) throw error;
+//   console.log("Successfully connected to the database.");
+// });
 
 // module.exports = connection;
+
+const connection = require("./connection");
 
 const DC_inventory = function (dc_inventory) {
   this.style = dc_inventory.style;

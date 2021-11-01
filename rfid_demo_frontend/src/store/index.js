@@ -1,5 +1,11 @@
 import { createStore } from "vuex";
 import axios from "axios";
+// import path from "path";
+// require("dotenv").config({
+//   path: path.resolve(__dirname, "../../.env"),
+// });
+
+axios.defaults.baseURL = "http://localhost:3000";
 
 export default createStore({
   state: {
@@ -41,7 +47,7 @@ export default createStore({
   },
   actions: {
     getStyles({ commit }) {
-      axios.get("http://localhost:5000/dc_inventory").then((res) => {
+      axios.get("/dc_inventory").then((res) => {
         commit("SET_STYLES", res.data);
         console.log(res.data);
       }),
@@ -51,7 +57,7 @@ export default createStore({
     },
 
     getTids({ commit }) {
-      axios.get("http://localhost:5000/dc_tags").then((res) => {
+      axios.get("/dc_tags").then((res) => {
         // commit("SET_TIDS", res.data);
         const justTids = [];
         let lastTidId = 0;
@@ -73,24 +79,20 @@ export default createStore({
     },
 
     createStyle({ commit }, data) {
-      axios
-        .post("http://localhost:5000/dc_inventory/create", data)
-        .then((res) => {
-          console.log(res.data);
-          this.dispatch("getStyles");
-        }),
+      axios.post("/dc_inventory/create", data).then((res) => {
+        console.log(res.data);
+        this.dispatch("getStyles");
+      }),
         (error) => {
           console.log(error);
         };
     },
 
     updateStyleStock({ commit }, data) {
-      axios
-        .put("http://localhost:5000/dc_inventory/update", data)
-        .then((res) => {
-          console.log(res.data);
-          this.dispatch("getStyles");
-        }),
+      axios.put("/dc_inventory/update", data).then((res) => {
+        console.log(res.data);
+        this.dispatch("getStyles");
+      }),
         (error) => {
           console.log(error);
         };
@@ -111,13 +113,11 @@ export default createStore({
         tidId++;
       }
 
-      axios
-        .post("http://localhost:5000/dc_tags/bulkCreate", values)
-        .then((res) => {
-          console.log(res);
-          this.dispatch("getTids");
-          this.dispatch("updateStyleStock", payload);
-        }),
+      axios.post("/dc_tags/bulkCreate", values).then((res) => {
+        console.log(res);
+        this.dispatch("getTids");
+        this.dispatch("updateStyleStock", payload);
+      }),
         (error) => {
           console.log(error);
         };
@@ -147,32 +147,28 @@ export default createStore({
         ]);
       }
 
-      axios
-        .post("http://localhost:5000/ongoing_to_shop/bulkCreate", values)
-        .then((res) => {
-          console.log(res.data);
-          this.dispatch("updateStyleStock", payload);
-          commit("SET_STOCK_TO_NULL");
-        }),
+      axios.post("/ongoing_to_shop/bulkCreate", values).then((res) => {
+        console.log(res.data);
+        this.dispatch("updateStyleStock", payload);
+        commit("SET_STOCK_TO_NULL");
+      }),
         (error) => {
           console.log(error);
         };
     },
 
     getStock({ commit }, style) {
-      axios
-        .get("http://localhost:5000/dc_inventory/getStock/" + style)
-        .then((res) => {
-          console.log(res.data);
-          commit("SET_STOCK", res.data);
-        }),
+      axios.get("/dc_inventory/getStock/" + style).then((res) => {
+        console.log(res.data);
+        commit("SET_STOCK", res.data);
+      }),
         (error) => {
           console.log(error);
         };
     },
 
     getOngoingShops({ commit }) {
-      axios.get("http://localhost:5000/ongoing_to_shop").then((res) => {
+      axios.get("/ongoing_to_shop").then((res) => {
         commit("SET_ONGOING_SHOPS", res.data);
         console.log(res.data);
       }),
@@ -186,37 +182,31 @@ export default createStore({
     },
 
     deleteStyle({ commit }, style) {
-      axios
-        .delete("http://localhost:5000/dc_inventory/delete/" + style)
-        .then((res) => {
-          console.log(res.data);
-          this.dispatch("getStyles");
-        }),
+      axios.delete("/dc_inventory/delete/" + style).then((res) => {
+        console.log(res.data);
+        this.dispatch("getStyles");
+      }),
         (error) => {
           console.log(error);
         };
     },
 
     deleteFromDcTags({ commit }, tid) {
-      axios
-        .delete("http://localhost:5000/dc_tags/delete/" + tid)
-        .then((res) => {
-          console.log(res.data);
-          this.dispatch("getTids");
-        }),
+      axios.delete("/dc_tags/delete/" + tid).then((res) => {
+        console.log(res.data);
+        this.dispatch("getTids");
+      }),
         (error) => {
           console.log(error);
         };
     },
 
     deleteFromOngoingShop({ commit }, tid) {
-      axios
-        .delete("http://localhost:5000/ongoing_to_shop/delete/" + tid)
-        .then((res) => {
-          console.log(res.data);
-          this.dispatch("getOngoingShops");
-          this.dispatch("deleteFromDcTags", tid);
-        }),
+      axios.delete("/ongoing_to_shop/delete/" + tid).then((res) => {
+        console.log(res.data);
+        this.dispatch("getOngoingShops");
+        this.dispatch("deleteFromDcTags", tid);
+      }),
         (error) => {
           console.log(error);
         };
