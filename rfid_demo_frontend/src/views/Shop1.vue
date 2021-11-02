@@ -3,11 +3,6 @@
         <label>Tid:</label>
         <input type="text" v-model="tid" v-on:keydown.enter.prevent="addTid(tid.length)" />
 
-        <!-- <li v-for="tid in justTids" :key="tid" class="x-pill">
-            <span>
-                {{ tid }}
-            </span>
-        </li> -->
         <div v-if="justTids.length">
             <span>Recieved: {{ justTids.length }} / {{ shopTids.length }}</span>
         </div>

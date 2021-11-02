@@ -47,7 +47,6 @@ export default {
       showModal: false,
       message: "Tags transferred to shop",
       styleAmount: []
-      // styleStocks: [],
     };
   },
   components: { Modal },
@@ -86,26 +85,9 @@ export default {
                   this.tids.filter(tid => {
                       if(tid.tid == this.tid) {
                           console.log(tid)
-                          // if(this.lastStyle) {
-                              // if(tid.style === this.lastStyle) {
                                 if(!this.justTids.includes(this.tid) && !this.ongoingShops.includes(this.tid)) {
                                     this.justTids.push(this.tid)
                                     this.tempTids.push(tid)
-                                    // this.allStock.filter(stock => {
-                                    //   if(tid.style == stock.style) {
-                                    //     this.styleAmount.filter(style => {
-                                    //       if(style.style == tid.style) {
-                                    //         style.amount--
-                                    //         break
-                                    //       }
-                                    //       else {
-                                    //         let amount = stock.stock - 1;
-                                    //         this.styleAmount.push({stock: amount, style: tid.style})
-                                    //         break
-                                    //       }
-                                    //     })
-                                    //   }
-                                    // })
                                     if(this.styleAmount.length) {
                                         this.styleAmount.filter(style => {
                                         if(style.style == tid.style) {
@@ -130,29 +112,7 @@ export default {
                                             }
                                         })
                                     }
-
-                                    // this.styleStocks.filter(item => {
-                                    //   if(item.style == this.lastStyle) {
-                                    //     item.stock++;
-                                    //     break;
-                                    //   }
-                                    //   else {
-                                    //     this.styleStocks.push({style: this.lastStyle, stock: 1});
-                                    //   }
-                                    // })
                                 }
-                              // }
-                          // }
-
-                          // else {
-                          //     this.lastStyle = tid.style
-                          //     this.$store.dispatch('getStock', tid.style)
-
-                          //     if(!this.justTids.includes(this.tid)) {
-                          //           this.justTids.push(this.tid)
-                          //           this.tempTids.push(tid)
-                          //     }
-                          // }
 
                       }
                   })
@@ -164,13 +124,10 @@ export default {
 
     transferToShop() {
         if(this.shop && this.tempTids) {
-            // console.log(this.$store.getters.stock)
             const data = { tidsArray: this.tempTids, shop: this.shop, styleAmount: this.styleAmount }
             this.$store.dispatch('registerTidsToOngoingShop', data)
             this.showModal = true
         }
-
-        // alert("transferring")
     },
 
     toggleModal() {

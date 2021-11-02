@@ -97,8 +97,6 @@ export default {
         this.$store.dispatch('registerTids', data)
         this.showModal = true
       }
-
-      // alert("form submitted");
       
     },
 

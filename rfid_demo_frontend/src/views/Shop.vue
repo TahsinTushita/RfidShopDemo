@@ -60,7 +60,6 @@ export default {
     methods: {
         addTid(tidLength) {
             if(this.tid) {
-                // if(this.tempTid && this.tempTid !== this.tid) {
                     if(tidLength === 24) {
                         this.shop1Tids.filter(item => {
                             if(item.tid == this.tid) {
@@ -74,7 +73,6 @@ export default {
                             }
                         })
                     }
-                // }
                 
                 this.tid = null
             }
