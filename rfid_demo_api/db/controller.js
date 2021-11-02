@@ -14,6 +14,36 @@ exports.getAll = (req, res) => {
   });
 };
 
+exports.getAllStock = (req, res) => {
+  DC_inventory.getAllStock((err, data) => {
+    if (err) {
+      res.status(500).send({
+        message:
+          err.message || "Some error occured while retrieving all stock.",
+      });
+    } else {
+      res.send(data);
+    }
+  });
+};
+
+exports.getStockByStyles = (req, res) => {
+  styles = [req.body];
+
+  // styles = [["DREREDXS1", "JEABLUL1", "SHIBLAM2"]];
+
+  DC_inventory.getStockByStyles(styles, (err, data) => {
+    if (err) {
+      res.status(500).send({
+        message:
+          err.message || "Some error occured while retrieving stock by styles.",
+      });
+    } else {
+      res.send(data);
+    }
+  });
+};
+
 exports.create = (req, res) => {
   // Validate request
   if (!req.body) {

@@ -72,6 +72,36 @@ DC_inventory.getStock = (style, result) => {
   );
 };
 
+DC_inventory.getStockByStyles = (styles, result) => {
+  connection.query(
+    "SELECT style,stock FROM dc_inventory WHERE style IN ?",
+    [styles],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+
+      console.log("stock by styles: ", res);
+      result(null, res);
+    }
+  );
+};
+
+DC_inventory.getAllStock = (result) => {
+  connection.query("SELECT style,stock FROM dc_inventory", (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+
+    console.log("all stock: ", res);
+    result(null, res);
+  });
+};
+
 DC_inventory.create = (data, result) => {
   connection.query("INSERT INTO dc_inventory SET ?", data, (err, res) => {
     if (err) {

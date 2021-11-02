@@ -1,8 +1,8 @@
 <template>
   <div id="nav">
-    <router-link to="/dcStyles">DC Styles</router-link> |
-    <router-link to="/">DC Tags</router-link> |
-    <router-link to="/transferToShop">Transfer To Shop</router-link> |
+    <router-link to="/">DC Styles</router-link> |
+    <router-link to="/dcTags">DC Tags</router-link> |
+    <router-link to="/transferToShop">Ongoing To Shop</router-link> |
     <router-link to="/shop1">Shop 1</router-link> |
     <router-link to="/shop">Shop</router-link>
   </div>

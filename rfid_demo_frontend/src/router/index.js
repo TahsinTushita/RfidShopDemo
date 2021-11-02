@@ -3,10 +3,12 @@ import DCTags from "../views/DCTags.vue";
 import TransferToShop from "../views/TransferToShop.vue";
 import Shop from "../views/Shop.vue";
 import Shop1 from "../views/Shop1.vue";
+import DCStyles from "../views/DCStyles.vue";
+import NotFound from "../views/NotFound.vue";
 
 const routes = [
   {
-    path: "/",
+    path: "/dcTags",
     name: "DCTags",
     component: DCTags,
   },
@@ -26,13 +28,14 @@ const routes = [
     component: Shop1,
   },
   {
-    path: "/dcStyles",
+    path: "/",
     name: "DCStyles",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/DCStyles.vue"),
+    component: DCStyles,
+  },
+  {
+    path: "/:catchAll(.*)",
+    name: "NotFound",
+    component: NotFound,
   },
 ];
 

@@ -17,6 +17,8 @@ export default createStore({
     ongoingShops: [],
     shopTids: [],
     shop1Tids: [],
+    stockByStyles: [],
+    allStock: [],
   },
   mutations: {
     SET_STYLES(state, styles) {
@@ -58,6 +60,14 @@ export default createStore({
     SET_SHOP1_TIDS(state, shop1Tids) {
       state.shop1Tids = shop1Tids;
     },
+
+    SET_STOCK_BY_STYLES(state, stockByStyles) {
+      state.stockByStyles = stockByStyles;
+    },
+
+    SET_ALL_STOCK(state, allStock) {
+      state.allStock = allStock;
+    },
   },
   actions: {
     getStyles({ commit }) {
@@ -70,22 +80,49 @@ export default createStore({
         };
     },
 
+    getStockByStyles({ commit }, styles) {
+      axios.get("/dc_inventory/getStockByStyles", styles).then((res) => {
+        console.log(res.data);
+        commit("SET_STOCK_BY_STYLES", res.data);
+      }),
+        (error) => {
+          console.log(error);
+        };
+    },
+
     getTids({ commit }) {
       axios.get("/dc_tags").then((res) => {
         // commit("SET_TIDS", res.data);
         const justTids = [];
+        // const styles = [];
         let lastTidId = 0;
 
         for (const tid of res.data) {
           justTids.push(tid.tid);
+          // if (!styles.includes(tid.style)) {
+          //   styles.push(tid.style);
+          // }
           if (tid.id > lastTidId) {
             lastTidId = tid.id;
           }
         }
 
+        // console.log("styless:    ", styles);
+
         commit("SET_JUST_TIDS", justTids);
         commit("SET_TIDS", res.data);
         commit("SET_LAST_TID_ID", lastTidId);
+        // this.dispatch("getStockByStyles", styles);
+      }),
+        (error) => {
+          console.log(error);
+        };
+    },
+
+    getAllStock({ commit }) {
+      axios.get("/dc_inventory/allStock").then((res) => {
+        console.log(res.data);
+        commit("SET_ALL_STOCK", res.data);
       }),
         (error) => {
           console.log(error);
@@ -139,21 +176,22 @@ export default createStore({
 
     registerTidsToOngoingShop({ commit }, data) {
       const values = [];
-      const style = data.style;
-      const amount = data.amount;
+      // const style = data.style;
+      // const amount = data.amount;
       const shop = data.shop;
-      const stock = this.getters.stock[0].stock;
-      const total = stock - amount;
-      console.log(
-        "amount: " + amount + "   stock: " + stock + "  total: " + total
-      );
-      const payload = { stock: total, style: style };
+      const styleAmount = data.styleAmount;
+      // const stock = this.getters.stock[0].stock;
+      // const total = stock - amount;
+      // console.log(
+      //   "amount: " + amount + "   stock: " + stock + "  total: " + total
+      // );
+      // const payload = { stock: total, style: style };
 
       for (const item of data.tidsArray) {
         values.push([
           shop,
           item.tid,
-          style,
+          item.style,
           item.name,
           item.colour,
           item.sz,
@@ -163,8 +201,11 @@ export default createStore({
 
       axios.post("/ongoing_to_shop/bulkCreate", values).then((res) => {
         console.log(res.data);
-        this.dispatch("updateStyleStock", payload);
-        commit("SET_STOCK_TO_NULL");
+        for (let style of styleAmount) {
+          this.dispatch("updateStyleStock", style);
+        }
+        // this.dispatch("updateStyleStock", payload);
+        // commit("SET_STOCK_TO_NULL");
       }),
         (error) => {
           console.log(error);
@@ -183,7 +224,12 @@ export default createStore({
 
     getOngoingShops({ commit }) {
       axios.get("/ongoing_to_shop").then((res) => {
-        commit("SET_ONGOING_SHOPS", res.data);
+        const ongoingShopsTids = [];
+        for (let item of res.data) {
+          ongoingShopsTids.push(item.tid);
+        }
+
+        commit("SET_ONGOING_SHOPS", ongoingShopsTids);
         console.log(res.data);
       }),
         (error) => {
@@ -323,6 +369,10 @@ export default createStore({
 
     shop1Tids: (state) => {
       return state.shop1Tids;
+    },
+
+    allStock: (state) => {
+      return state.allStock;
     },
   },
 
