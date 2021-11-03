@@ -89,6 +89,23 @@ DC_inventory.getStockByStyles = (styles, result) => {
   );
 };
 
+DC_inventory.getByStyle = (style, result) => {
+  connection.query(
+    "SELECT * from dc_inventory WHERE style = ?",
+    style,
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+
+      console.log(res);
+      result(null, res);
+    }
+  );
+};
+
 DC_inventory.getAllStock = (result) => {
   connection.query("SELECT style,stock FROM dc_inventory", (err, res) => {
     if (err) {

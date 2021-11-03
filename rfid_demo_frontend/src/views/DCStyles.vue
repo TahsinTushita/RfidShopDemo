@@ -1,5 +1,7 @@
 <template>
-  <form>
+  <div class="wrapper">
+    <div>
+      <form>
     <label>Name:</label>
     <input type="text" required v-model="name"/>
 
@@ -19,6 +21,29 @@
       <button @click="createStyle">Create Style</button>
     </div>
   </form>
+    </div>
+    <div>
+      <div class="card">
+        <div class="wrapper1">
+          <div class="bold">Name</div>
+          <div class="bold">Colour</div>
+          <div class="bold">Size</div>
+          <div class="bold">Price</div>
+          <div class="bold">StyleId</div>
+          <div class="bold">Stock</div>
+        </div>
+
+        <div class="wrapper1" v-for="style in styles" :key="style.id">
+          <div>{{ style.name }}</div>
+          <div>{{ style.colour }}</div>
+          <div>{{ style.sz }}</div>
+          <div>{{ style.price }}</div>
+          <div>{{ style.style }}</div>
+          <div>{{ style.stock }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

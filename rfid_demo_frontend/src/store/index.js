@@ -19,6 +19,8 @@ export default createStore({
     shop1Tids: [],
     stockByStyles: [],
     allStock: [],
+    tagStyle: null,
+    transferStyles: [],
   },
   mutations: {
     SET_STYLES(state, styles) {
@@ -68,11 +70,21 @@ export default createStore({
     SET_ALL_STOCK(state, allStock) {
       state.allStock = allStock;
     },
+
+    SET_TAG_STYLE(state, tagStyle) {
+      state.tagStyle = tagStyle;
+    },
+
+    SET_TRANSFER_STYLES(state, transferStyles) {
+      state.transferStyles = transferStyles;
+    },
   },
   actions: {
     getStyles({ commit }) {
       axios.get("/dc_inventory").then((res) => {
         commit("SET_STYLES", res.data);
+        const tagStyle = JSON.parse(localStorage.getItem("tagStyle"));
+        commit("SET_TAG_STYLE", tagStyle);
         console.log(res.data);
       }),
         (error) => {
@@ -88,6 +100,15 @@ export default createStore({
         (error) => {
           console.log(error);
         };
+    },
+
+    getProductByStyle({ commit }, style) {
+      axios.get("/dc_inventory/getByStyle/" + style).then((res) => {
+        console.log(res.data);
+        const transferStyles = this.getters.transferStyles;
+        transferStyles.push(res.data);
+        commit("SET_TRANSFER_STYLES", transferStyles);
+      });
     },
 
     getTids({ commit }) {
@@ -158,6 +179,7 @@ export default createStore({
       const sz = data.sz;
       const price = data.price;
       const stock = data.stock;
+      const tagStyle = data.tagStyle;
       const payload = { stock: stock, style: style };
       for (const item of data.tidsArray) {
         values.push([tidId, item, style, name, colour, sz, price]);
@@ -168,6 +190,7 @@ export default createStore({
         console.log(res);
         this.dispatch("getTids");
         this.dispatch("updateStyleStock", payload);
+        localStorage.setItem("tagStyle", JSON.stringify(tagStyle));
       }),
         (error) => {
           console.log(error);
@@ -180,6 +203,7 @@ export default createStore({
       // const amount = data.amount;
       const shop = data.shop;
       const styleAmount = data.styleAmount;
+      const transferStyles = data.transferStyles;
       // const stock = this.getters.stock[0].stock;
       // const total = stock - amount;
       // console.log(
@@ -204,6 +228,16 @@ export default createStore({
         for (let style of styleAmount) {
           this.dispatch("updateStyleStock", style);
         }
+
+        for (let tr of transferStyles) {
+          for (let st of styleAmount) {
+            if (tr.style == st.style) {
+              tr.stock = st.stock;
+            }
+          }
+        }
+
+        localStorage.setItem("transferStyles", JSON.stringify(transferStyles));
         // this.dispatch("updateStyleStock", payload);
         // commit("SET_STOCK_TO_NULL");
       }),
@@ -230,6 +264,10 @@ export default createStore({
         }
 
         commit("SET_ONGOING_SHOPS", ongoingShopsTids);
+        const transferStyles = JSON.parse(
+          localStorage.getItem("transferStyles")
+        );
+        commit("SET_TRANSFER_STYLES", transferStyles);
         console.log(res.data);
       }),
         (error) => {
@@ -373,6 +411,14 @@ export default createStore({
 
     allStock: (state) => {
       return state.allStock;
+    },
+
+    tagStyle: (state) => {
+      return state.tagStyle;
+    },
+
+    transferStyles: (state) => {
+      return state.transferStyles;
     },
   },
 

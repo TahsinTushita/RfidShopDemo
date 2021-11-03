@@ -1,5 +1,7 @@
 <template>
-  <form @submit.prevent="reciveTagsInShop">
+  <div class="wrapper">
+      <div>
+          <form @submit.prevent="reciveTagsInShop">
         <label>Tid:</label>
         <input type="text" v-model="tid" v-on:keydown.enter.prevent="addTid(tid.length)" />
 
@@ -11,6 +13,51 @@
             <button type="submit" :disabled="btnDisabled">Recieve</button>
         </div>
     </form>
+      </div>
+      <div>
+        <div class="card">    
+            <!-- <div class="wrapper1">
+                <div class="bold">Name</div>
+                <div class="bold">Colour</div>
+                <div class="bold">Size</div>
+                <div class="bold">Price</div>
+                <div class="bold">StyleId</div>
+                <div class="bold">Tid</div>
+            </div> -->
+            <table>
+                <tr>
+                    <th colspan="3">Name</th>
+                    <th colspan="1">Colour</th>
+                    <th colspan="1">Size</th>
+                    <th colspan="1">Price</th>
+                    <th colspan="2">Style</th>
+                    <th colspan="4">Tid</th>
+                </tr>
+                <div v-if="shopTids.length">
+                    <tr v-for="shopTid in shopTids" :key="shopTid.tid">
+                        <td colspan="3">{{ shopTid.name }}</td>
+                        <td colspan="1">{{ shopTid.colour }}</td>
+                        <td colspan="1">{{ shopTid.sz }}</td>
+                        <td colspan="1">{{ shopTid.price }}</td>
+                        <td colspan="2">{{ shopTid.style }}</td>
+                        <td colspan="4">{{ shopTid.tid }}</td>
+                    </tr>
+                </div>
+            </table>
+
+            <!-- <div v-if="shopTids.length">
+                <div class="wrapper1" v-for="shopTid in shopTids" :key="shopTid.tid">
+                    <div>{{ shopTid.name }}</div>
+                    <div>{{ shopTid.colour }}</div>
+                    <div>{{ shopTid.sz }}</div>
+                    <div>{{ shopTid.price }}</div>
+                    <div>{{ shopTid.style }}</div>
+                    <div>{{ shopTid.tid }}</div>
+                </div>
+            </div> -->
+        </div>
+      </div>
+  </div>
 
     <div v-if="showModal">
         <Modal :header="header" :text="text" @close="toggleModal">

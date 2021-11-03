@@ -30,6 +30,7 @@ app.put("/dc_inventory/update", controller.update);
 app.delete("/dc_inventory/delete/:style", controller.delete);
 app.get("/dc_inventory/getStockByStyles", controller.getStockByStyles);
 app.get("/dc_inventory/allStock", controller.getAllStock);
+app.get("/dc_inventory/getByStyle/:style", controller.getByStyle);
 
 app.get("/dc_tags", tagsController.getAll);
 app.post("/dc_tags/create", tagsController.create);

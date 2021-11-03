@@ -1,5 +1,7 @@
 <template>
-  <form @submit.prevent="transferToShop">
+  <div class="wrapper">
+    <div>
+      <form @submit.prevent="transferToShop">
 
     <label>Shop:</label>
     <select v-model="shop">
@@ -22,6 +24,44 @@
     </div>
 
   </form>
+    </div>
+    <div>
+      <div class="card">    
+       <div class="wrapper1">
+          <div class="bold">Name</div>
+          <div class="bold">Colour</div>
+          <div class="bold">Size</div>
+          <div class="bold">Price</div>
+          <div class="bold">StyleId</div>
+          <div class="bold">Stock</div>
+        </div>
+
+        <div v-if="styles.length">
+          <div class="wrapper1" v-for="style in styles" :key="style.style">
+            <div>{{ style.name }}</div>
+            <div>{{ style.colour }}</div>
+            <div>{{ style.sz }}</div>
+            <div>{{ style.price }}</div>
+            <div>{{ style.style }}</div>
+            <div>{{ style.stock }}</div>
+          </div>
+        </div>
+
+        <div v-else>
+          <div v-if="transferStyles.length">
+            <div  v-for="style in transferStyles" :key="style" class="wrapper1">
+              <div>{{ style.name }}</div>
+              <div>{{ style.colour }}</div>
+              <div>{{ style.sz }}</div>
+              <div>{{ style.price }}</div>
+              <div>{{ style.style }}</div>
+              <div>{{ style.stock }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div v-if="showModal">
     <Modal :header="header" :text="text" @close="toggleModal">
@@ -46,7 +86,8 @@ export default {
       lastStyle: null,
       showModal: false,
       message: "Tags transferred to shop",
-      styleAmount: []
+      styleAmount: [],
+      styles: []
     };
   },
   components: { Modal },
@@ -74,6 +115,12 @@ export default {
         get() {
           return this.$store.getters.allStock
         }
+      },
+
+      transferStyles: {
+        get() {
+          return this.$store.getters.transferStyles
+        }
       }
   },
 
@@ -88,6 +135,31 @@ export default {
                                 if(!this.justTids.includes(this.tid) && !this.ongoingShops.includes(this.tid)) {
                                     this.justTids.push(this.tid)
                                     this.tempTids.push(tid)
+                                    if(this.styles.length) {
+                                      let match = false
+                                      this.styles.filter(style => {
+                                        if(tid.style == style.style) {
+                                          match = true
+                                        }
+                                        
+                                      })
+                                      if(match == false) {
+                                          this.allStock.filter(stock => {
+                                            if(tid.style == stock.style) {
+                                              this.styles.push({name: tid.name, colour: tid.colour, sz: tid.sz, price: tid.price, style: tid.style, stock: stock.stock})
+                                            }
+                                          })
+                                        }
+                                    }
+                                    else {
+                                      this.allStock.filter(stock => {
+                                        if(tid.style == stock.style) {
+                                          this.styles.push({name: tid.name, colour: tid.colour, sz: tid.sz, price: tid.price, style: tid.style, stock: stock.stock})
+                                        }
+                                      })
+                                    }
+                                    
+
                                     if(this.styleAmount.length) {
                                         this.styleAmount.filter(style => {
                                         if(style.style == tid.style) {
@@ -103,7 +175,6 @@ export default {
                                         }
                                       })
                                     }
-                                    
                                     else {
                                       this.allStock.filter(stock => {
                                             if(stock.style == tid.style) {
@@ -124,7 +195,7 @@ export default {
 
     transferToShop() {
         if(this.shop && this.tempTids) {
-            const data = { tidsArray: this.tempTids, shop: this.shop, styleAmount: this.styleAmount }
+            const data = { tidsArray: this.tempTids, shop: this.shop, styleAmount: this.styleAmount, transferStyles: this.styles }
             this.$store.dispatch('registerTidsToOngoingShop', data)
             this.showModal = true
         }

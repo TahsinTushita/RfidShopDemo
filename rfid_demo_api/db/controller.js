@@ -44,6 +44,20 @@ exports.getStockByStyles = (req, res) => {
   });
 };
 
+exports.getByStyle = (req, res) => {
+  DC_inventory.getByStyle(req.params.style, (err, data) => {
+    if (err) {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Some error occured while retrieving products by style.",
+      });
+    } else {
+      res.send(data);
+    }
+  });
+};
+
 exports.create = (req, res) => {
   // Validate request
   if (!req.body) {
