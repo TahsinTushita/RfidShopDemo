@@ -1,33 +1,34 @@
-
 <template>
   <div class="wrapper">
     <div>
       <form @submit.prevent="registerTags">
+        <label>Style:</label>
+        <select v-model="style">
+          <option v-for="style in styles" :value="style" :key="style.id">
+            {{ style.style }}
+          </option>
+        </select>
 
-    <label>Style:</label>
-    <select v-model="style">
-      <option v-for="style in styles" :value="style" :key="style.id">
-        {{ style.style }}
-      </option>
-    </select>
+        <label>Tid:</label>
+        <input
+          type="text"
+          v-model="tid"
+          v-on:keydown.enter.prevent="addTid(tid.length)"
+        />
 
-    <label>Tid:</label>
-    <input type="text" v-model="tid" v-on:keydown.enter.prevent="addTid(tid.length)" />
+        <li v-for="tid in tempTids" :key="tid" class="x-pill">
+          <span @click="deleteTid(tid)">
+            {{ tid }}
+          </span>
+        </li>
 
-    <li v-for="tid in tempTids" :key="tid" class="x-pill">
-      <span @click="deleteTid(tid)">
-        {{ tid }}
-      </span>
-    </li>
-
-    <div >
-      <button type="submit">Regiter Tags</button>
-    </div>
-
-  </form>
+        <div>
+          <button type="submit">Regiter Tags</button>
+        </div>
+      </form>
     </div>
     <div>
-      <div class="card">    
+      <div class="card">
         <div class="wrapper1">
           <div class="bold">Name</div>
           <div class="bold">Colour</div>
@@ -59,7 +60,7 @@
           </div>
         </div>
       </div>
-      </div>
+    </div>
   </div>
 
   <div v-if="showModal">
@@ -70,11 +71,11 @@
 </template>
 
 <script>
-import Modal from "../components/Modal.vue"
+import Modal from "../components/Modal.vue";
 
 export default {
   name: "DCTags",
-  components:{ Modal },
+  components: { Modal },
   data() {
     return {
       regTids: [],
@@ -83,40 +84,42 @@ export default {
       values: [],
       message: "Tags registered",
       showModal: false,
-      style: null
+      style: null,
     };
   },
 
   mounted() {
-    this.$store.dispatch('getStyles')
-    this.$store.dispatch('getTids')
+    this.$store.dispatch("getStyles");
+    this.$store.dispatch("getTids");
   },
 
   computed: {
-      styles: {
-          get() {
-            return this.$store.getters.allStyles
-          }
+    styles: {
+      get() {
+        return this.$store.getters.allStyles;
       },
+    },
 
-      tids: {
-        get() {
-          return this.$store.getters.justTids
-        }
+    tids: {
+      get() {
+        return this.$store.getters.justTids;
       },
+    },
 
-      tagStyle: {
-        get() {
-          return this.$store.getters.tagStyle
-        }
-      }
+    tagStyle: {
+      get() {
+        return this.$store.getters.tagStyle;
+      },
+    },
   },
 
   methods: {
-
     addTid(tidLength) {
       if (this.tid) {
-        if (!this.tempTids.includes(this.tid) && !this.tids.includes(this.tid)) {
+        if (
+          !this.tempTids.includes(this.tid) &&
+          !this.tids.includes(this.tid)
+        ) {
           console.log(tidLength);
           console.log(this.tid);
           if (tidLength === 24) {
@@ -135,22 +138,28 @@ export default {
     },
 
     registerTags() {
-      if(this.tempTids.length && this.style) {
-        const stock = this.style.stock + this.tempTids.length
-        this.style.stock = stock
-        const data = {tidsArray: this.tempTids, style: this.style.style, name: this.style.name,
-         colour: this.style.colour, sz: this.style.sz, price: this.style.price,
-          stock: stock, tagStyle: this.style}
-        this.$store.dispatch('registerTids', data)
-        this.showModal = true
+      if (this.tempTids.length && this.style) {
+        const stock = this.style.stock + this.tempTids.length;
+        this.style.stock = stock;
+        const data = {
+          tidsArray: this.tempTids,
+          style: this.style.style,
+          name: this.style.name,
+          colour: this.style.colour,
+          sz: this.style.sz,
+          price: this.style.price,
+          stock: stock,
+          tagStyle: this.style,
+        };
+        this.$store.dispatch("registerTids", data);
+        this.showModal = true;
       }
-      
     },
 
     toggleModal() {
-      this.showModal = false
-      window.location.reload()
-    }
+      this.showModal = false;
+      window.location.reload();
+    },
   },
 };
 </script>
@@ -196,7 +205,8 @@ input[type="checkbox"] {
   top: 2px;
 }
 
-input, select:focus {
+input,
+select:focus {
   outline: none;
 }
 
@@ -242,32 +252,30 @@ button:disabled {
 }
 
 .wrapper {
-    display: flex;
-    flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.wrapper>div {
-    flex: 1 1 150px;
-    height: 500px;
-    margin: 10px;
-    padding: 10px;
+.wrapper > div {
+  flex: 1 1 150px;
+  height: 500px;
+  margin: 10px;
+  padding: 10px;
 }
 
 .wrapper1 {
-    display: flex;
-    flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.wrapper1>div {
-    flex: 1 1 50px;
-    height: 10px;
-    margin: 10px;
-    padding: 10px;
+.wrapper1 > div {
+  flex: 1 1 50px;
+  height: 10px;
+  margin: 10px;
+  padding: 10px;
 }
 
 .bold {
   font-weight: bold;
 }
-
 </style>
-
