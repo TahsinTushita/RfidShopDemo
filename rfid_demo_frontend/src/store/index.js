@@ -174,15 +174,11 @@ export default createStore({
       const values = [];
       let tidId = this.getters.lastTidId + 1;
       const style = data.style;
-      const name = data.name;
-      const colour = data.colour;
-      const sz = data.sz;
-      const price = data.price;
       const stock = data.stock;
       const tagStyle = data.tagStyle;
       const payload = { stock: stock, style: style };
-      for (const item of data.tidsArray) {
-        values.push([tidId, item, style, name, colour, sz, price]);
+      for (const tid of data.tidsArray) {
+        values.push([tid, style]);
         tidId++;
       }
 
@@ -212,15 +208,7 @@ export default createStore({
       // const payload = { stock: total, style: style };
 
       for (const item of data.tidsArray) {
-        values.push([
-          shop,
-          item.tid,
-          item.style,
-          item.name,
-          item.colour,
-          item.sz,
-          item.price,
-        ]);
+        values.push([shop, item.tid, item.style]);
       }
 
       axios.post("/ongoing_to_shop/bulkCreate", values).then((res) => {
@@ -348,14 +336,7 @@ export default createStore({
       const shop = "shop1";
 
       for (const item of data) {
-        values.push([
-          item.tid,
-          item.style,
-          item.name,
-          item.colour,
-          item.sz,
-          item.price,
-        ]);
+        values.push([item.tid, item.style]);
       }
 
       axios.post("/shop1/bulkCreate", values).then((res) => {

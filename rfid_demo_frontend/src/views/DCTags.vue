@@ -78,7 +78,6 @@ export default {
   components: { Modal },
   data() {
     return {
-      regTids: [],
       tid: null,
       tempTids: [],
       values: [],
@@ -144,10 +143,6 @@ export default {
         const data = {
           tidsArray: this.tempTids,
           style: this.style.style,
-          name: this.style.name,
-          colour: this.style.colour,
-          sz: this.style.sz,
-          price: this.style.price,
           stock: stock,
           tagStyle: this.style,
         };

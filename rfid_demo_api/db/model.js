@@ -12,10 +12,6 @@ const DC_inventory = function (dc_inventory) {
 const DC_tags = function (dc_tags) {
   this.tid = dc_tags.tid;
   this.style = dc_tags.style;
-  this.name = dc_tags.name;
-  this.colour = dc_tags.colour;
-  this.sz = dc_tags.sz;
-  this.price = dc_tags.price;
 };
 
 const DC_inventory_update = function (dc_inventory) {
@@ -27,19 +23,11 @@ const OngoingToShop = function (ongoingToShop) {
   this.shop = ongoingToShop.shop;
   this.tid = ongoingToShop.tid;
   this.style = ongoingToShop.style;
-  this.name = ongoingToShop.name;
-  this.colour = ongoingToShop.colour;
-  this.sz = ongoingToShop.sz;
-  this.price = ongoingToShop.price;
 };
 
 const Shop1 = function (shop1) {
   this.tid = shop.tid;
   this.style = shop.style;
-  this.name = shop.name;
-  this.colour = shop.colour;
-  this.sz = shop.sz;
-  this.price = shop.price;
 };
 
 DC_inventory.getAll = (result) => {
@@ -157,7 +145,7 @@ DC_inventory_update.updateStock = (style, result) => {
 
 DC_tags.bulkCreate = (values, result) => {
   connection.query(
-    "INSERT INTO dc_tags (id, tid, style, name, colour, sz, price) VALUES ?",
+    "INSERT INTO dc_tags (tid,style) VALUES ?",
     [values],
     (err, res) => {
       if (err) {
@@ -196,17 +184,33 @@ DC_inventory.delete = (style, result) => {
   );
 };
 
-DC_tags.getAll = (result) => {
-  connection.query("SELECT * FROM dc_tags", (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-      return;
-    }
+// DC_tags.getAll = (result) => {
+//   connection.query("SELECT * FROM dc_tags", (err, res) => {
+//     if (err) {
+//       console.log("error: ", err);
+//       result(null, err);
+//       return;
+//     }
 
-    console.log("dc_tags: ", res);
-    result(null, res);
-  });
+//     console.log("dc_tags: ", res);
+//     result(null, res);
+//   });
+// };
+
+DC_tags.getAll = (result) => {
+  connection.query(
+    "SELECT dc_inventory.style,dc_inventory.name,dc_inventory.colour,dc_inventory.sz,dc_inventory.price,dc_inventory.stock,dc_tags.tid FROM dc_inventory INNER JOIN dc_tags ON dc_inventory.style = dc_tags.style",
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+
+      console.log("dc_tags: ", res);
+      result(null, res);
+    }
+  );
 };
 
 DC_tags.create = (data, result) => {
@@ -242,21 +246,24 @@ DC_tags.delete = (tid, result) => {
 };
 
 OngoingToShop.getAll = (result) => {
-  connection.query("SELECT * FROM ongoing_to_shop", (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-      return;
-    }
+  connection.query(
+    "SELECT ongoing_to_shop.shop,dc_inventory.style,dc_inventory.name,dc_inventory.colour,dc_inventory.sz,dc_inventory.price,dc_inventory.stock,ongoing_to_shop.tid FROM dc_inventory RIGHT JOIN ongoing_to_shop ON dc_inventory.style = ongoing_to_shop.style",
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
 
-    console.log("ongoing_to_shop: ", res);
-    result(null, res);
-  });
+      console.log("ongoing_to_shop: ", res);
+      result(null, res);
+    }
+  );
 };
 
 OngoingToShop.bulkCreate = (values, result) => {
   connection.query(
-    "INSERT INTO ongoing_to_shop (shop, tid, style, name, colour, sz, price) VALUES ?",
+    "INSERT INTO ongoing_to_shop (shop, tid, style) VALUES ?",
     [values],
     (err, res) => {
       if (err) {
@@ -297,7 +304,7 @@ OngoingToShop.delete = (tid, result) => {
 
 OngoingToShop.getFromShop = (shop, result) => {
   connection.query(
-    "SELECT * FROM ongoing_to_shop WHERE shop = ?",
+    "SELECT dc_inventory.style,dc_inventory.name,dc_inventory.colour,dc_inventory.sz,dc_inventory.price,ongoing_to_shop.tid FROM dc_inventory INNER JOIN ongoing_to_shop ON dc_inventory.style = ongoing_to_shop.style AND ongoing_to_shop.shop = ?",
     shop,
     (err, res) => {
       if (err) {
@@ -330,16 +337,19 @@ OngoingToShop.deleteFromShop = (shop, result) => {
 };
 
 Shop1.getAll = (result) => {
-  connection.query("SELECT * FROM shop1", (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-      return;
-    }
+  connection.query(
+    "SELECT dc_inventory.style,dc_inventory.name,dc_inventory.colour,dc_inventory.sz,dc_inventory.price,shop1.tid FROM dc_inventory RIGHT JOIN shop1 ON dc_inventory.style = shop1.style",
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
 
-    console.log("shop1: ", res);
-    result(null, res);
-  });
+      console.log("shop1: ", res);
+      result(null, res);
+    }
+  );
 };
 
 Shop1.delete = (tid, result) => {
@@ -357,7 +367,7 @@ Shop1.delete = (tid, result) => {
 
 Shop1.bulkCreate = (values, result) => {
   connection.query(
-    "INSERT INTO shop1 (tid, style, name, colour, sz, price) VALUES ?",
+    "INSERT INTO shop1 (tid, style) VALUES ?",
     [values],
     (err, res) => {
       if (err) {

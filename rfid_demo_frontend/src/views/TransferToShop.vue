@@ -98,7 +98,7 @@ export default {
   mounted() {
     this.$store.dispatch("getTids");
     this.$store.dispatch("getOngoingShops");
-    this.$store.dispatch("getAllStock");
+    // this.$store.dispatch("getAllStock");
   },
 
   computed: {
@@ -114,11 +114,11 @@ export default {
       },
     },
 
-    allStock: {
-      get() {
-        return this.$store.getters.allStock;
-      },
-    },
+    // allStock: {
+    //   get() {
+    //     return this.$store.getters.allStock;
+    //   },
+    // },
 
     transferStyles: {
       get() {
@@ -148,32 +148,49 @@ export default {
                     }
                   });
                   if (match == false) {
-                    this.allStock.filter((stock) => {
-                      if (tid.style == stock.style) {
-                        this.styles.push({
+                    // this.allStock.filter((stock) => {
+                    //   if (tid.style == stock.style) {
+                    //     this.styles.push({
+                    //       name: tid.name,
+                    //       colour: tid.colour,
+                    //       sz: tid.sz,
+                    //       price: tid.price,
+                    //       style: tid.style,
+                    //       stock: stock.stock,
+                    //     });
+                    //   }
+                    // });
+                    this.styles.push({
                           name: tid.name,
                           colour: tid.colour,
                           sz: tid.sz,
                           price: tid.price,
                           style: tid.style,
-                          stock: stock.stock,
+                          stock: tid.stock,
                         });
-                      }
-                    });
                   }
                 } else {
-                  this.allStock.filter((stock) => {
-                    if (tid.style == stock.style) {
-                      this.styles.push({
-                        name: tid.name,
-                        colour: tid.colour,
-                        sz: tid.sz,
-                        price: tid.price,
-                        style: tid.style,
-                        stock: stock.stock,
-                      });
-                    }
-                  });
+                  // this.allStock.filter((stock) => {
+                  //   if (tid.style == stock.style) {
+                  //     this.styles.push({
+                  //       name: tid.name,
+                  //       colour: tid.colour,
+                  //       sz: tid.sz,
+                  //       price: tid.price,
+                  //       style: tid.style,
+                  //       stock: stock.stock,
+                  //     });
+                  //   }
+                  // });
+
+                  this.styles.push({
+                          name: tid.name,
+                          colour: tid.colour,
+                          sz: tid.sz,
+                          price: tid.price,
+                          style: tid.style,
+                          stock: tid.stock,
+                        });
                 }
 
                 if (this.styleAmount.length) {
@@ -181,27 +198,38 @@ export default {
                     if (style.style == tid.style) {
                       style.stock--;
                     } else {
-                      this.allStock.filter((stock) => {
-                        if (stock.style == tid.style) {
-                          let amount = stock.stock - 1;
+                      // this.allStock.filter((stock) => {
+                      //   if (stock.style == tid.style) {
+                      //     let amount = stock.stock - 1;
+                      //     this.styleAmount.push({
+                      //       stock: amount,
+                      //       style: stock.style,
+                      //     });
+                      //   }
+                      // });
+                      let amount = tid.stock - 1;
                           this.styleAmount.push({
                             stock: amount,
-                            style: stock.style,
+                            style: tid.style,
                           });
-                        }
-                      });
                     }
                   });
                 } else {
-                  this.allStock.filter((stock) => {
-                    if (stock.style == tid.style) {
-                      let amount = stock.stock - 1;
+                  // this.allStock.filter((stock) => {
+                  //   if (stock.style == tid.style) {
+                  //     let amount = stock.stock - 1;
+                  //     this.styleAmount.push({
+                  //       stock: amount,
+                  //       style: stock.style,
+                  //     });
+                  //   }
+                  // });
+
+                  let amount = tid.stock - 1;
                       this.styleAmount.push({
                         stock: amount,
-                        style: stock.style,
+                        style: tid.style,
                       });
-                    }
-                  });
                 }
               }
             }
