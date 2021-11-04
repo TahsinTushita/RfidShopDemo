@@ -33,13 +33,13 @@
             </tr>
           </thead>
             <tbody>
-                <tr v-for="tempTid in tempTids" :key="tempTid.tid" :class="getClassColour(tempTid.recieved)">
-                    <td class="w-1/5 px-4 py-4 text-center border border-gray-400">{{ tempTid.name }}</td>
-                    <td class="w-1/5 px-4 py-4 text-center border border-gray-400">{{ tempTid.colour }}</td>
-                    <td class="w-1/5 px-4 py-4 text-center border border-gray-400">{{ tempTid.sz }}</td>
-                    <td class="w-1/5 px-4 py-4 text-center border border-gray-400">{{ tempTid.price }}</td>
-                    <td class="w-1/5 px-4 py-4 text-center border border-gray-400">{{ tempTid.style }}</td>
-                    <td class="w-1/5 px-4 py-4 text-center border border-gray-400">{{ tempTid.tid }}</td>
+                <tr v-for="shopTid in shopTids" :key="shopTid.tid" :class="getClassColour(shopTid.recieved)">
+                    <td class="w-1/5 px-4 py-4 text-center border border-gray-400">{{ shopTid.name }}</td>
+                    <td class="w-1/5 px-4 py-4 text-center border border-gray-400">{{ shopTid.colour }}</td>
+                    <td class="w-1/5 px-4 py-4 text-center border border-gray-400">{{ shopTid.sz }}</td>
+                    <td class="w-1/5 px-4 py-4 text-center border border-gray-400">{{ shopTid.price }}</td>
+                    <td class="w-1/5 px-4 py-4 text-center border border-gray-400">{{ shopTid.style }}</td>
+                    <td class="w-1/5 px-4 py-4 text-center border border-gray-400">{{ shopTid.tid }}</td>
                 </tr>
             </tbody>
         </table>
@@ -63,7 +63,6 @@ export default {
     return {
       tid: null,
       justTids: [],
-      tempTids: [],
       shop: "shop1",
       btnDisabled: true,
       showModal: false,
@@ -75,7 +74,6 @@ export default {
 
   mounted() {
     this.$store.dispatch("getFromShop", this.shop);
-    this.setShopTidsToTempTids()
   },
 
   computed: {
@@ -84,10 +82,6 @@ export default {
         return this.$store.getters.shopTids;
       },
     },
-    
-    shopToTempTids() {
-        return this.setShopTidsToTempTids(this.shopTids)
-    }
   },
 
   methods: {
@@ -96,11 +90,7 @@ export default {
         this.shopTids.filter((shopTid) => {
           if (shopTid.tid == this.tid) {
             this.justTids.push(this.tid);
-            this.tempTids.filter(temp => {
-                if(this.tid == temp.tid) {
-                    temp.recieved = true
-                }
-            })
+            shopTid.recieved = true;
           }
         });
       }
@@ -119,15 +109,6 @@ export default {
     reciveTagsInShop() {
       this.$store.dispatch("registerTidsToShop1", this.shopTids);
       this.showModal = true;
-    },
-
-    setShopTidsToTempTids() {
-        if(this.shopTids) {
-            for(let item of this.shopTids) {
-                this.tempTids.push({name: item.name, colour: item.colour, style: item.style,
-                 sz: item.sz, price: item.price, tid: item.tid, recieved: false})
-            }
-        }
     },
 
     getClassColour(recieved) {

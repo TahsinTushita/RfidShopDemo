@@ -313,7 +313,20 @@ export default createStore({
     getFromShop({ commit }, shop) {
       axios.get("/ongoing_to_shop/" + shop).then((res) => {
         console.log(res.data);
-        commit("SET_SHOP_TIDS", res.data);
+        const shopTids = [];
+        for (let data of res.data) {
+          shopTids.push({
+            name: data.name,
+            colour: data.colour,
+            style: data.style,
+            sz: data.sz,
+            price: data.price,
+            tid: data.tid,
+            recieved: false,
+          });
+        }
+
+        commit("SET_SHOP_TIDS", shopTids);
       }),
         (error) => {
           console.log(error);
