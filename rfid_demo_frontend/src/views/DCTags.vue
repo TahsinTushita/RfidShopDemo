@@ -29,36 +29,39 @@
     </div>
     <div>
       <div class="card">
-        <div class="wrapper1">
-          <div class="bold">Name</div>
-          <div class="bold">Colour</div>
-          <div class="bold">Size</div>
-          <div class="bold">Price</div>
-          <div class="bold">StyleId</div>
-          <div class="bold">Stock</div>
-        </div>
 
-        <div v-if="style">
-          <div class="wrapper1">
-            <div>{{ style.name }}</div>
-            <div>{{ style.colour }}</div>
-            <div>{{ style.sz }}</div>
-            <div>{{ style.price }}</div>
-            <div>{{ style.style }}</div>
-            <div>{{ style.stock }}</div>
-          </div>
-        </div>
-
-        <div v-else>
-          <div v-if="tagStyle" class="wrapper1">
-            <div>{{ tagStyle.name }}</div>
-            <div>{{ tagStyle.colour }}</div>
-            <div>{{ tagStyle.sz }}</div>
-            <div>{{ tagStyle.price }}</div>
-            <div>{{ tagStyle.style }}</div>
-            <div>{{ tagStyle.stock }}</div>
-          </div>
-        </div>
+        <table>
+          <thead>
+            <tr>
+                <th class="w-1/5 px-4 py-4 text-center ">Name</th>
+                <th class="w-1/5 px-4 py-4 text-center ">Colour</th>
+                <th class="w-1/5 px-4 py-4 text-center ">Size</th>
+                <th class="w-1/5 px-4 py-4 text-center ">Price</th>
+                <th class="w-1/5 px-4 py-4 text-center ">StyleID</th>
+                <th class="w-1/5 px-4 py-4 text-center ">Stock</th>
+            </tr>
+          </thead>
+            <tbody v-if="style">
+                <tr>
+                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.name }}</td>
+                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.colour }}</td>
+                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.sz }}</td>
+                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.price }}</td>
+                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.style }}</td>
+                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.stock }}</td>
+                </tr>
+            </tbody>
+            <tbody v-else>
+                <tr v-if="tagStyle">
+                    <td class="w-1/5 px-4 py-4 text-center ">{{ tagStyle.name }}</td>
+                    <td class="w-1/5 px-4 py-4 text-center ">{{ tagStyle.colour }}</td>
+                    <td class="w-1/5 px-4 py-4 text-center ">{{ tagStyle.sz }}</td>
+                    <td class="w-1/5 px-4 py-4 text-center ">{{ tagStyle.price }}</td>
+                    <td class="w-1/5 px-4 py-4 text-center ">{{ tagStyle.style }}</td>
+                    <td class="w-1/5 px-4 py-4 text-center ">{{ tagStyle.stock }}</td>
+                </tr>
+            </tbody>
+        </table>
       </div>
     </div>
   </div>

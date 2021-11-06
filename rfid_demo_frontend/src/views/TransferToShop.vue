@@ -29,7 +29,39 @@
     </div>
     <div>
       <div class="card">
-        <div class="wrapper1">
+        <table>
+          <thead>
+            <tr>
+                <th class="w-1/5 px-4 py-4 text-center ">Name</th>
+                <th class="w-1/5 px-4 py-4 text-center ">Colour</th>
+                <th class="w-1/5 px-4 py-4 text-center ">Size</th>
+                <th class="w-1/5 px-4 py-4 text-center ">Price</th>
+                <th class="w-1/5 px-4 py-4 text-center ">StyleID</th>
+                <th class="w-1/5 px-4 py-4 text-center ">Stock</th>
+            </tr>
+          </thead>
+            <tbody v-if="styles.length">
+                <tr v-for="style in styles" :key="style.style">
+                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.name }}</td>
+                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.colour }}</td>
+                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.sz }}</td>
+                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.price }}</td>
+                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.style }}</td>
+                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.stock }}</td>
+                </tr>
+            </tbody>
+            <tbody v-else>
+                <tr v-for="style in transferStyles" :key="style">
+                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.name }}</td>
+                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.colour }}</td>
+                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.sz }}</td>
+                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.price }}</td>
+                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.style }}</td>
+                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.stock }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- <div class="wrapper1">
           <div class="bold">Name</div>
           <div class="bold">Colour</div>
           <div class="bold">Size</div>
@@ -60,7 +92,7 @@
               <div>{{ style.stock }}</div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -129,15 +161,12 @@ export default {
 
   methods: {
     addTid(tidLength) {
-      if (this.tid) {
-        if (tidLength === 24) {
-          this.tids.filter((tid) => {
-            if (tid.tid == this.tid) {
-              console.log(tid);
-              if (
-                !this.justTids.includes(this.tid) &&
-                !this.ongoingShops.includes(this.tid)
-              ) {
+
+      if(this.tid) {
+        if(tidLength === 24) {
+          this.tids.filter(tid => {
+            if(tid.tid === this.tid) {
+              if(!this.justTids.includes(this.tid) && !this.ongoingShops.includes(this.tid)) {
                 this.justTids.push(this.tid);
                 this.tempTids.push(tid);
                 if (this.styles.length) {
@@ -148,18 +177,6 @@ export default {
                     }
                   });
                   if (match == false) {
-                    // this.allStock.filter((stock) => {
-                    //   if (tid.style == stock.style) {
-                    //     this.styles.push({
-                    //       name: tid.name,
-                    //       colour: tid.colour,
-                    //       sz: tid.sz,
-                    //       price: tid.price,
-                    //       style: tid.style,
-                    //       stock: stock.stock,
-                    //     });
-                    //   }
-                    // });
                     this.styles.push({
                           name: tid.name,
                           colour: tid.colour,
@@ -168,20 +185,21 @@ export default {
                           style: tid.style,
                           stock: tid.stock,
                         });
+
+                    let amount = tid.stock - 1;
+                    this.styleAmount.push({
+                      stock: amount,
+                      style: tid.style,
+                    })
+                  }
+                  else {
+                    this.styleAmount.filter(amount => {
+                      if(amount.style == tid.style) {
+                        amount.stock = amount.stock - 1
+                      }
+                    })
                   }
                 } else {
-                  // this.allStock.filter((stock) => {
-                  //   if (tid.style == stock.style) {
-                  //     this.styles.push({
-                  //       name: tid.name,
-                  //       colour: tid.colour,
-                  //       sz: tid.sz,
-                  //       price: tid.price,
-                  //       style: tid.style,
-                  //       stock: stock.stock,
-                  //     });
-                  //   }
-                  // });
 
                   this.styles.push({
                           name: tid.name,
@@ -191,49 +209,17 @@ export default {
                           style: tid.style,
                           stock: tid.stock,
                         });
-                }
-
-                if (this.styleAmount.length) {
-                  this.styleAmount.filter((style) => {
-                    if (style.style == tid.style) {
-                      style.stock--;
-                    } else {
-                      // this.allStock.filter((stock) => {
-                      //   if (stock.style == tid.style) {
-                      //     let amount = stock.stock - 1;
-                      //     this.styleAmount.push({
-                      //       stock: amount,
-                      //       style: stock.style,
-                      //     });
-                      //   }
-                      // });
-                      let amount = tid.stock - 1;
-                          this.styleAmount.push({
-                            stock: amount,
-                            style: tid.style,
-                          });
-                    }
-                  });
-                } else {
-                  // this.allStock.filter((stock) => {
-                  //   if (stock.style == tid.style) {
-                  //     let amount = stock.stock - 1;
-                  //     this.styleAmount.push({
-                  //       stock: amount,
-                  //       style: stock.style,
-                  //     });
-                  //   }
-                  // });
 
                   let amount = tid.stock - 1;
-                      this.styleAmount.push({
-                        stock: amount,
-                        style: tid.style,
-                      });
+                  this.styleAmount.push({
+                      stock: amount,
+                      style: tid.style,
+                  })
                 }
               }
+              
             }
-          });
+          })
         }
       }
 
