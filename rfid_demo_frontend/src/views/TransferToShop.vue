@@ -32,34 +32,34 @@
         <table>
           <thead>
             <tr>
-                <th class="w-1/5 px-4 py-4 text-center ">Name</th>
-                <th class="w-1/5 px-4 py-4 text-center ">Colour</th>
-                <th class="w-1/5 px-4 py-4 text-center ">Size</th>
-                <th class="w-1/5 px-4 py-4 text-center ">Price</th>
-                <th class="w-1/5 px-4 py-4 text-center ">StyleID</th>
-                <th class="w-1/5 px-4 py-4 text-center ">Stock</th>
+              <th class="w-1/5 px-4 py-4 text-center">Name</th>
+              <th class="w-1/5 px-4 py-4 text-center">Colour</th>
+              <th class="w-1/5 px-4 py-4 text-center">Size</th>
+              <th class="w-1/5 px-4 py-4 text-center">Price</th>
+              <th class="w-1/5 px-4 py-4 text-center">StyleID</th>
+              <th class="w-1/5 px-4 py-4 text-center">Stock</th>
             </tr>
           </thead>
-            <tbody v-if="styles.length">
-                <tr v-for="style in styles" :key="style.style">
-                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.name }}</td>
-                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.colour }}</td>
-                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.sz }}</td>
-                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.price }}</td>
-                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.style }}</td>
-                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.stock }}</td>
-                </tr>
-            </tbody>
-            <tbody v-else>
-                <tr v-for="style in transferStyles" :key="style">
-                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.name }}</td>
-                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.colour }}</td>
-                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.sz }}</td>
-                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.price }}</td>
-                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.style }}</td>
-                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.stock }}</td>
-                </tr>
-            </tbody>
+          <tbody v-if="styles.length">
+            <tr v-for="style in styles" :key="style.style">
+              <td class="w-1/5 px-4 py-4 text-center">{{ style.name }}</td>
+              <td class="w-1/5 px-4 py-4 text-center">{{ style.colour }}</td>
+              <td class="w-1/5 px-4 py-4 text-center">{{ style.sz }}</td>
+              <td class="w-1/5 px-4 py-4 text-center">{{ style.price }}</td>
+              <td class="w-1/5 px-4 py-4 text-center">{{ style.style }}</td>
+              <td class="w-1/5 px-4 py-4 text-center">{{ style.stock }}</td>
+            </tr>
+          </tbody>
+          <tbody v-else>
+            <tr v-for="style in transferStyles" :key="style">
+              <td class="w-1/5 px-4 py-4 text-center">{{ style.name }}</td>
+              <td class="w-1/5 px-4 py-4 text-center">{{ style.colour }}</td>
+              <td class="w-1/5 px-4 py-4 text-center">{{ style.sz }}</td>
+              <td class="w-1/5 px-4 py-4 text-center">{{ style.price }}</td>
+              <td class="w-1/5 px-4 py-4 text-center">{{ style.style }}</td>
+              <td class="w-1/5 px-4 py-4 text-center">{{ style.stock }}</td>
+            </tr>
+          </tbody>
         </table>
         <!-- <div class="wrapper1">
           <div class="bold">Name</div>
@@ -161,12 +161,14 @@ export default {
 
   methods: {
     addTid(tidLength) {
-
-      if(this.tid) {
-        if(tidLength === 24) {
-          this.tids.filter(tid => {
-            if(tid.tid === this.tid) {
-              if(!this.justTids.includes(this.tid) && !this.ongoingShops.includes(this.tid)) {
+      if (this.tid) {
+        if (tidLength === 24) {
+          this.tids.filter((tid) => {
+            if (tid.tid === this.tid) {
+              if (
+                !this.justTids.includes(this.tid) &&
+                !this.ongoingShops.includes(this.tid)
+              ) {
                 this.justTids.push(this.tid);
                 this.tempTids.push(tid);
                 if (this.styles.length) {
@@ -178,48 +180,45 @@ export default {
                   });
                   if (match == false) {
                     this.styles.push({
-                          name: tid.name,
-                          colour: tid.colour,
-                          sz: tid.sz,
-                          price: tid.price,
-                          style: tid.style,
-                          stock: tid.stock,
-                        });
+                      name: tid.name,
+                      colour: tid.colour,
+                      sz: tid.sz,
+                      price: tid.price,
+                      style: tid.style,
+                      stock: tid.stock,
+                    });
 
                     let amount = tid.stock - 1;
                     this.styleAmount.push({
                       stock: amount,
                       style: tid.style,
-                    })
-                  }
-                  else {
-                    this.styleAmount.filter(amount => {
-                      if(amount.style == tid.style) {
-                        amount.stock = amount.stock - 1
+                    });
+                  } else {
+                    this.styleAmount.filter((amount) => {
+                      if (amount.style == tid.style) {
+                        amount.stock = amount.stock - 1;
                       }
-                    })
+                    });
                   }
                 } else {
-
                   this.styles.push({
-                          name: tid.name,
-                          colour: tid.colour,
-                          sz: tid.sz,
-                          price: tid.price,
-                          style: tid.style,
-                          stock: tid.stock,
-                        });
+                    name: tid.name,
+                    colour: tid.colour,
+                    sz: tid.sz,
+                    price: tid.price,
+                    style: tid.style,
+                    stock: tid.stock,
+                  });
 
                   let amount = tid.stock - 1;
                   this.styleAmount.push({
-                      stock: amount,
-                      style: tid.style,
-                  })
+                    stock: amount,
+                    style: tid.style,
+                  });
                 }
               }
-              
             }
-          })
+          });
         }
       }
 

@@ -27,24 +27,24 @@
         <table>
           <thead>
             <tr>
-                <th class="w-1/5 px-4 py-4 text-center ">Name</th>
-                <th class="w-1/5 px-4 py-4 text-center ">Colour</th>
-                <th class="w-1/5 px-4 py-4 text-center ">Size</th>
-                <th class="w-1/5 px-4 py-4 text-center ">Price</th>
-                <th class="w-1/5 px-4 py-4 text-center ">StyleID</th>
-                <th class="w-1/5 px-4 py-4 text-center ">Stock</th>
+              <th class="w-1/5 px-4 py-4 text-center">Name</th>
+              <th class="w-1/5 px-4 py-4 text-center">Colour</th>
+              <th class="w-1/5 px-4 py-4 text-center">Size</th>
+              <th class="w-1/5 px-4 py-4 text-center">Price</th>
+              <th class="w-1/5 px-4 py-4 text-center">StyleID</th>
+              <th class="w-1/5 px-4 py-4 text-center">Stock</th>
             </tr>
           </thead>
-            <tbody v-if="styles.length">
-                <tr v-for="style in styles" :key="style.id">
-                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.name }}</td>
-                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.colour }}</td>
-                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.sz }}</td>
-                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.price }}</td>
-                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.style }}</td>
-                    <td class="w-1/5 px-4 py-4 text-center ">{{ style.stock }}</td>
-                </tr>
-            </tbody>
+          <tbody v-if="styles.length">
+            <tr v-for="style in styles" :key="style.id">
+              <td class="w-1/5 px-4 py-4 text-center">{{ style.name }}</td>
+              <td class="w-1/5 px-4 py-4 text-center">{{ style.colour }}</td>
+              <td class="w-1/5 px-4 py-4 text-center">{{ style.sz }}</td>
+              <td class="w-1/5 px-4 py-4 text-center">{{ style.price }}</td>
+              <td class="w-1/5 px-4 py-4 text-center">{{ style.style }}</td>
+              <td class="w-1/5 px-4 py-4 text-center">{{ style.stock }}</td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>
@@ -52,7 +52,6 @@
 </template>
 
 <script>
-
 export default {
   data() {
     return {

@@ -20,30 +20,34 @@
     </div>
     <div>
       <div class="card">
-          <!-- <div v-if="shopTids.length"> -->
+        <!-- <div v-if="shopTids.length"> -->
         <table>
           <thead>
             <tr>
-                <th class="w-1/5 px-4 py-4 text-center ">Name</th>
-                <th class="w-1/5 px-4 py-4 text-center ">Colour</th>
-                <th class="w-1/5 px-4 py-4 text-center ">Size</th>
-                <th class="w-1/5 px-4 py-4 text-center ">Price</th>
-                <th class="w-1/5 px-4 py-4 text-center ">StyleID</th>
-                <th class="w-1/5 px-4 py-4 text-center ">Tid</th>
+              <th class="w-1/5 px-4 py-4 text-center">Name</th>
+              <th class="w-1/5 px-4 py-4 text-center">Colour</th>
+              <th class="w-1/5 px-4 py-4 text-center">Size</th>
+              <th class="w-1/5 px-4 py-4 text-center">Price</th>
+              <th class="w-1/5 px-4 py-4 text-center">StyleID</th>
+              <th class="w-1/5 px-4 py-4 text-center">Tid</th>
             </tr>
           </thead>
-            <tbody v-if="shopTids.length">
-                <tr v-for="shopTid in shopTids" :key="shopTid.tid" :class="getClassColour(shopTid.recieved)">
-                    <td class="w-1/5 px-4 py-4 text-center ">{{ shopTid.name }}</td>
-                    <td class="w-1/5 px-4 py-4 text-center ">{{ shopTid.colour }}</td>
-                    <td class="w-1/5 px-4 py-4 text-center ">{{ shopTid.sz }}</td>
-                    <td class="w-1/5 px-4 py-4 text-center ">{{ shopTid.price }}</td>
-                    <td class="w-1/5 px-4 py-4 text-center ">{{ shopTid.style }}</td>
-                    <td class="w-1/5 px-4 py-4 text-center ">{{ shopTid.tid }}</td>
-                </tr>
-            </tbody>
+          <tbody v-if="shopTids.length">
+            <tr
+              v-for="shopTid in shopTids"
+              :key="shopTid.tid"
+              :class="getClassColour(shopTid.recieved)"
+            >
+              <td class="w-1/5 px-4 py-4 text-center">{{ shopTid.name }}</td>
+              <td class="w-1/5 px-4 py-4 text-center">{{ shopTid.colour }}</td>
+              <td class="w-1/5 px-4 py-4 text-center">{{ shopTid.sz }}</td>
+              <td class="w-1/5 px-4 py-4 text-center">{{ shopTid.price }}</td>
+              <td class="w-1/5 px-4 py-4 text-center">{{ shopTid.style }}</td>
+              <td class="w-1/5 px-4 py-4 text-center">{{ shopTid.tid }}</td>
+            </tr>
+          </tbody>
         </table>
-          <!-- </div> -->
+        <!-- </div> -->
       </div>
     </div>
   </div>
@@ -112,13 +116,12 @@ export default {
     },
 
     getClassColour(recieved) {
-        if(recieved == false) {
-            return "bg-red-200"
-        }
-        else {
-            return "bg-green-200"
-        }
-    }
+      if (recieved == false) {
+        return "bg-red-200";
+      } else {
+        return "bg-green-200";
+      }
+    },
   },
 };
 </script>
