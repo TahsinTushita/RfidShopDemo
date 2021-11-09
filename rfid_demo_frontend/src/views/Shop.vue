@@ -1,65 +1,130 @@
 <template>
-  <form @submit.prevent="sellProduct">
-    <label>Tid:</label>
-    <input
-      type="text"
-      v-model="tid"
-      v-on:keydown.enter.prevent="addTid(tid.length)"
-    />
+  <div class="wrapper">
+    <div>
+      <form @submit.prevent="sellProduct">
+        <label>Tid:</label>
+        <input
+          type="text"
+          v-model="tid"
+          v-on:keydown.enter.prevent="addTid(tid.length)"
+        />
 
-    <li class="x-pill">
+        <li class="space-y-2">
+          <ul>
+            Tid:{{
+              tempTid
+            }}
+          </ul>
+          <ul>
+            Name:{{
+              name
+            }}
+          </ul>
+          <ul>
+            Colour:{{
+              colour
+            }}
+          </ul>
+          <ul>
+            Style:{{
+              style
+            }}
+          </ul>
+          <ul>
+            Size:{{
+              size
+            }}
+          </ul>
+          <ul>
+            Price:{{
+              price
+            }}
+          </ul>
+        </li>
+
+        <div>
+          <button type="submit">Sell</button>
+        </div>
+      </form>
+    </div>
+
+    <div>
+      <div class="card">
+        <table>
+          <thead>
+            <tr>
+              <th class="w-1/5 px-4 py-4 text-center">Name</th>
+              <th class="w-1/5 px-4 py-4 text-center">Colour</th>
+              <th class="w-1/5 px-4 py-4 text-center">Size</th>
+              <th class="w-1/5 px-4 py-4 text-center">Price</th>
+              <th class="w-1/5 px-4 py-4 text-center">StyleID</th>
+              <th class="w-1/5 px-4 py-4 text-center">Tid</th>
+            </tr>
+          </thead>
+          <tbody v-if="shop1Tids.length">
+            <tr
+              v-for="shopTid in shop1Tids"
+              :key="shopTid.tid"
+              :class="getClassColour(shopTid.selected)"
+            >
+              <td class="w-1/5 px-4 py-4 text-center">{{ shopTid.name }}</td>
+              <td class="w-1/5 px-4 py-4 text-center">{{ shopTid.colour }}</td>
+              <td class="w-1/5 px-4 py-4 text-center">{{ shopTid.sz }}</td>
+              <td class="w-1/5 px-4 py-4 text-center">{{ shopTid.price }}</td>
+              <td class="w-1/5 px-4 py-4 text-center">{{ shopTid.style }}</td>
+              <td class="w-1/5 px-4 py-4 text-center">{{ shopTid.tid }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div v-if="sold" class="card1">
+    <h1 class="text-lg">Product Sold!</h1>
+    <li class="space-y-2">
       <ul>
-        Tid:
-        {{
+        Tid:{{
           tempTid
         }}
       </ul>
       <ul>
-        Name:
-        {{
+        Name:{{
           name
         }}
       </ul>
       <ul>
-        Colour:
-        {{
+        Colour:{{
           colour
         }}
       </ul>
       <ul>
-        Style:
-        {{
+        Style:{{
           style
         }}
       </ul>
       <ul>
-        Size:
-        {{
+        Size:{{
           size
         }}
       </ul>
       <ul>
-        Price:
-        {{
+        Price:{{
           price
         }}
       </ul>
     </li>
+  </div>
 
-    <div>
-      <button type="submit">Sell</button>
-    </div>
-  </form>
-
-  <div v-if="showModal">
+  <!-- <div v-if="showModal">
     <Modal :header="header" :text="text" @close="toggleModal">
       <h3>{{ message }}</h3>
     </Modal>
-  </div>
+  </div> -->
 </template>
 
 <script>
-import Modal from "../components/Modal.vue";
+// import Modal from "../components/Modal.vue";
 
 export default {
   data() {
@@ -74,9 +139,10 @@ export default {
       showModal: false,
       message: "Product sold",
       shop: "shop1",
+      sold: false,
     };
   },
-  components: { Modal },
+  // components: { Modal },
 
   mounted() {
     this.$store.dispatch("getTidsFromShop1");
@@ -102,6 +168,7 @@ export default {
               this.size = item.sz;
               this.price = item.price;
               this.tempTid = this.tid;
+              item.selected = true;
             }
           });
         }
@@ -114,12 +181,19 @@ export default {
       if (this.tempTid) {
         this.$store.dispatch("deleteTidFromShop1", this.tempTid);
         this.showModal = true;
+        this.sold = true;
       }
     },
 
     toggleModal() {
       this.showModal = false;
       window.location.reload();
+    },
+
+    getClassColour(selected) {
+      if (selected == true) {
+        return "bg-green-200";
+      }
     },
   },
 };

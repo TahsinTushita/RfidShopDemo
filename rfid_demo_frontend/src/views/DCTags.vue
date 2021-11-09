@@ -248,6 +248,17 @@ button:disabled {
   border: 1px solid gray;
 }
 
+.card1 {
+  max-width: 450px;
+  margin: 30px auto;
+  background: white;
+  text-align: left;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 3px 6px gray;
+  border: 1px solid gray;
+}
+
 .wrapper {
   display: flex;
   flex-wrap: wrap;

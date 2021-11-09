@@ -351,7 +351,19 @@ export default createStore({
     getTidsFromShop1({ commit }) {
       axios.get("/shop1").then((res) => {
         console.log(res.data);
-        commit("SET_SHOP1_TIDS", res.data);
+        const shopTids = [];
+        for (let data of res.data) {
+          shopTids.push({
+            name: data.name,
+            colour: data.colour,
+            style: data.style,
+            sz: data.sz,
+            price: data.price,
+            tid: data.tid,
+            selected: false,
+          });
+        }
+        commit("SET_SHOP1_TIDS", shopTids);
       }),
         (error) => {
           console.log(error);
